@@ -1,0 +1,36 @@
+header {
+  display: flex;
+  justify-content: flex-end;
+  background: lightgrey;
+  padding: 15px;
+}
+.goods-list {
+  display: flex;
+  justify-content: space-between;
+}
+.goods-item {
+  width: 300px;
+  border: 1px solid #000;
+  margin: 30px;
+  padding: 10px;
+}
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+main {
+  max-width: 1366px;
+  height: 100%;
+}
+footer {
+  background: darkgrey;
+  height: 50px;
+}
