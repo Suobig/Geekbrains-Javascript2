@@ -1,23 +1,47 @@
 const placeHolderImage = "img/placeholder.png";
 
-const goods = [
-    { title: "Shirt", price: 150 },
-    { title: "Socks", price: 50 },
-    { title: "Jacket", price: 350 },
-    { title: "Shoes", price: 250 },
-];
+class GoodsItem {
+    constructor(title = None, price, image = placeHolderImage) {
+        this.title = title;
+        this.price = price;
+        this.image = image;
+    }
 
-const renderGoodsItem = (title= "<No Title>", price = 0, image = placeHolderImage) =>
-    `<div class="goods-item">
-        <img src='${image}' alt='${title}'/>
-        <h3>${title}</h3>
-        <p>${price}</p>
-        <button class="button-item-add">Добавить</button>
-    </div>`
-
-const renderGoodsList = list => {
-    let goodsList = list.map(item => renderGoodsItem(item.title, item.price, item.image));
-    document.querySelector('.goods-list').innerHTML = goodsList.join();
+    render() {
+        return `
+            <div class="goods-item">
+                <img src='${this.image}' alt='${this.title}'/>
+                <h3>${this.title}</h3>
+                <p>${this.price}</p>
+                <button class="button-item-add">Добавить</button>
+            </div>`
+    }
 }
 
-renderGoodsList(goods);
+class GoodsList {
+    constructor () {
+        this.goods = [];
+    }
+
+    //В последующем - асинхронный запрос на удаленный сервер
+    fetchGoods() {
+        this.goods = [
+            { title: "Shirt", price: 150 },
+            { title: "Socks", price: 50 },
+            { title: "Jacket", price: 350 },
+            { title: "Shoes", price: 250 },
+        ]
+    }
+
+    render() {
+        const listHtml = this.goods.reduce((acc, good) => {
+            const goodsItem = new GoodsItem(good.title, good.price);
+            return acc += goodsItem.render();
+        }, '')        
+        document.querySelector('.goods-list').innerHTML = listHtml;
+    }
+}
+
+const list = new GoodsList();
+list.fetchGoods();
+list.render();
