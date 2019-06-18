@@ -1,4 +1,13 @@
+/**
+ * Класс относится ко всем пищевым продуктам и добавкамм
+ */
 class Food {
+  
+  /**
+   * @param  {String} name Название продукта
+   * @param  {Number} price Цена единицы продукта
+   * @param  {Number} calories количество калорий
+   */
   constructor(name, price, calories) {
     this.name = name;
     this.price = price;
@@ -6,11 +15,17 @@ class Food {
   }
 }
 
+/**
+ * Доступные размеры бургеров
+ */
 const Size = {
   big: new Food(name="Big burger", price=50, calories=20),
   small: new Food(name="Small burger", price=100, calories=40),
 }
 
+/**
+ * Доступные начинки
+ */
 const Stuffing = {
   cheese: new Food(name="Cheese", price=10, calories=20),
   salad: new Food(name="Salad", price=20, calories=5),
@@ -18,36 +33,67 @@ const Stuffing = {
   bacon: new Food(name="Bacon", price=20, calories=30),
 }
 
+/**
+ * Доступные топпинги
+ */
 const Topping = {
   hotPeper: new Food(name="Hot Pepper", price=15, calories=0),
   mayo: new Food(name="Mayo", price=20, calories=5),
 }
 
+/**
+ * Особые случаи, когда начинкам имеет разную цену или количество калорий
+ * в зависимости от размера бургера
+ */
 specialCases =  {
   cases: new Map(),
 
-  setCase(size, stuffing, food) {
+  /** Добавить новый особый случай
+   * @param  {Food} size размер бургера
+   * @param  {Food} stuffing начинка бургера
+   * @param  {Food} newCase новое значение
+   * @returns {Food} добавленное значение
+   */
+  setCase(size, stuffing, newCase) {
     if (this.cases.has(size)) {
-      this.cases.get(size).set(stuffing, food)
+      this.cases.get(size).set(stuffing, newCase)
     } else {
       this.cases.set(size, new Map());
-      this.cases.get(size).set(stuffing, food);
+      this.cases.get(size).set(stuffing, newCase);
     }
 
-    return food;
+    return newCase;
   },
 
+  /** 
+   * Удалить особый случай
+   * @param  {Food} size размер бургера
+   * @param  {Food} stuffing начинка бургера
+   * @returns {Boolean} true - если успешно удалено, иначе - false
+   */
   removeCase(size, stuffing) {
     if (this.cases.has(size)) {
       return this.cases.get(size).delete(stuffing);
     }
     return false;
   },
-
+  
+  /**
+   * Проверяет, есть ли особый случай с заданными параметрами
+   * @param  {Food} size размер бургера
+   * @param  {Food} stuffing начинка бургера
+   * @returns {Boolean}
+   */
   hasCase(size, stuffing) { 
     return this.cases.has(size) && this.cases.get(size).has(stuffing);
   },
 
+  /**
+   * Получить особый случай с заданными параметрами
+   * @param  {Food} size размер бургера
+   * @param  {Food} stuffing начинка бургера
+   * @returns {Food} найденный случай, null - если не нашел
+   */
   getCase(size, stuffing) {
     if (this.hasCase(size, stuffing)) {
       return this.cases.get(size).get(stuffing);
@@ -59,8 +105,14 @@ specialCases =  {
 //В большом бургере с беконом больше калорий, чем в маленьком
 specialCases.setCase(Size.big, Stuffing.bacon, new Food(20, 35));
 
-
+/**
+ * Гамбургер заданного размера с заданной начинкой и топпингом
+ */
 class Hamburger {
+  /**
+   * @param  {Food} size размер бургера
+   * @param  {Food} stuffing начинка бургера
+   */
   constructor(size, stuffing) {
     this.size = size;
     this.stuffing = stuffing;
@@ -76,6 +128,10 @@ class Hamburger {
     this.toppings = new Map();
   }
 
+  /**
+   * Добавить новый топпинг. Если топпинг уже существует - увеличить количество.
+   * @param  {Food} topping добавляемый топпинг
+   */
   addTopping(topping) {
     if (this.toppings.has(topping)) {
       this.toppings.set(topping, this.toppings.get(topping) + 1);
@@ -84,30 +140,55 @@ class Hamburger {
     }
   }
 
+  /**
+   * Удалить топпинг. Если топпинг уже существует - уменьшить количество (но не
+   * меньше 0)
+   * @param  {Food} topping удаляемый топпинг
+   */
   removeTopping(topping) {
     if (this.toppings.has(topping) && this.toppings.get(topping) > 0) {
       this.toppings.set(topping, this.toppings.get(topping) - 1);
     }
   }
 
+  /**
+   * Получить текущие топпинги
+   * @returns { Array{ Arrray{ { Food }, { Integer } } } }
+   */
   getToppings() {
     return Array.from(this.toppings.entries());
   }
 
+  /**
+   * Получить размер бургера
+   * @returns {Food}
+   */
   getSize() {
     return this.size;
   }
 
+  /**
+   * Получить начинку
+   * @returns {Food}
+   */
   getStuffing() {
     return this.stuffing;
   }
 
+  /**
+   * Вычислить полную цену бургера с учетом всех топпингов
+   * @returns {Number}
+   */
   calculatePrice() {
     let toppingsPrice = 0;
     this.toppings.forEach((v, k) => toppingsPrice += k.price * v);
     return toppingsPrice + this.basePrice;
   }
 
+  /**
+   * Вычислить общее число калорий в бургере с учетом всех топпингов
+   * @returns {Number}
+   */
   calculateCalories() {
     let toppingsCalories = 0;
     this.toppings.forEach((v, k) => toppingsCalories += k.calories * v);
