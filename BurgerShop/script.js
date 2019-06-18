@@ -196,7 +196,7 @@ class Hamburger {
   }
 } 
 
-test = function() {
+function test() {
   logBurger = function(burgerName, burger) {
     console.log(`${burgerName}:`);
     
