@@ -1,5 +1,5 @@
 /**
- * Класс относится ко всем пищевым продуктам и добавкамм
+ * Класс относится ко всем пищевым продуктам и добавкам
  */
 class Food {
   
@@ -103,7 +103,9 @@ specialCases =  {
 }
 
 //В большом бургере с беконом больше калорий, чем в маленьком
-specialCases.setCase(Size.big, Stuffing.bacon, new Food(20, 35));
+specialCases.setCase(Size.big, 
+                     Stuffing.bacon, 
+                     new Food(name="Big Bacon", price=20, calories=35));
 
 /**
  * Гамбургер заданного размера с заданной начинкой и топпингом
@@ -121,6 +123,10 @@ class Hamburger {
       const specialCase = specialCases.getCase(size, stuffing);
       this.basePrice = specialCase.price;
       this.baseCalories = specialCase.calories;
+      console.log(`Special price: ${specialCase.price}`);
+      console.log(`Special calories: ${specialCase.calories}`);
+      
+      
     } else {
       this.basePrice = size.price + stuffing.price;
       this.baseCalories = size.calories + stuffing.calories;
@@ -232,6 +238,9 @@ function test() {
   logBurger("Removing mayo again should do nothing", smallCheeseburger);
   console.log(`Current toppings:`);
   console.log(smallCheeseburger.getToppings());  
+
+  const bigBaconBurger = new Hamburger(Size.big, Stuffing.bacon);
+  logBurger("Big Bacon", bigBaconBurger);
 }
 
 test();
