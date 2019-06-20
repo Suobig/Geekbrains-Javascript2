@@ -14,4 +14,3 @@ class MainMenuItem extends MenuItem {
     this.color = "blue";
   }
 }
-
