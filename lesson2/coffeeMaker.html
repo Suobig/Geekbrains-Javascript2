@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+</head>
+
+<body>
+
+  <script>
+    function Machine(power) {
+      this._enabled = false;
+
+      this.enable = function() {
+        this._enabled = true;
+      };
+
+      this.disable = function() {
+        this._enabled = false;
+      };
+    }
+
+    function CoffeeMachine(power) {
+      Machine.apply(this, arguments);
+
+      var waterAmount = 0;
+
+      this.setWaterAmount = function(amount) {
+        waterAmount = amount;
+      };
+
+      this._timerID = null;
+
+      function onReady() {
+        console.log('Кофе готово!');
+      }
+
+      this.run = function() {
+        if (!this._enabled) {
+          throw new Error("Кофеварка не включена!");
+        }
+        this._timerID = setTimeout(onReady, 5000);
+      };
+
+      this.stop = function() {
+        clearTimeout(this._timerID);
+      }
+
+      const parentDisable = this.disable;
+      this.disable = function() {
+        this.stop();
+        parentDisable.call(this);
+      }
+
+    }
+
+    function Fridge(power) {
+      Machine.apply(this,arguments);
+
+      this._power = power;
+      const _food = [];
+
+      this.addFood = function(...newFood) {
+        if (!this._enabled) {
+          throw new Error("Холодильник выключен!");
+        }
+        if (newFood.length + _food.length > this._power / 100) {
+          throw new Error("Слишком много еды");
+        }
+        _food.push(...newFoodt);
+      }
+
+      this.getFood = function() {
+        return _food.slice();
+      }
+
+
+    }
+
+    let cm = new CoffeeMachine(5000);
+  </script>
+
+</body>
+
+</html>

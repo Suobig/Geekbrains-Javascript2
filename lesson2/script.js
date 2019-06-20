@@ -1,44 +1,35 @@
-// function TestOuter(val1, val2) {
-//   const self = this;
+function Machine(power) {
+  this._enabled = false;
+  this._power = power;
 
-//   let innerVal = val1;
-//   self.publicVal = val2; 
+  this.enable = function() { this._enabled = true; };
+  this.disable = function() { this._enabled = false; };
+
+  this.isEnabled = function() { return this._enabled };
+}
+
+function CoffeeMachine(power, capacity) {
+  Machine.apply(this, arguments); //унаследовали
+
+  this._waterAmount = 0;
+
+  this.setWaterAmount = function(amount) {
+    this._waterAmount = amount;
+  };
+
+  this.getPower = function() {  
+    return this._power;
+  }
+}
+
+const coffeeMachine = new CoffeeMachine(10000, 1200);
+console.log(`Включена: ${coffeeMachine.isEnabled()}`);
+console.log(`Мощность: ${coffeeMachine.getPower()}`);
 
 
-//   self.report = function() {
-//     innerLevel1Report = function() {
-//       console.log(`Inner level 1 function reporting inner: ${innerVal}`);
-//       console.log(`Inner level 1 function reporting public: ${self.publicVal}`);
-//       privateReport();
-//     };
+coffeeMachine.enable();
+console.log(`Включена: ${coffeeMachine.isEnabled()}`);
 
-//     console.log(`Outer function reporting: ${innerVal}`);
-//     console.log(`Outer function reporting public: ${self.publicVal}`);
-//     innerLevel1Report();
-//     privateReport();
-//   }
-
-//   function privateReport() {
-//     console.log(`Private function reporting inner: ${innerVal}`);
-//     console.log(`Private function reporting public: ${self.publicVal}`);
-//   }
-// }
-
-
-// class TestOuter {
-//   #privateVal;
-
-//   constructor(val1, val2) { 
-//     this.#privateVal = val1;
-//     this.publicVal = val2;
-//   }
-
-//   report() { 
-//     console.log(`Outer function reporting private: ${this.#privateVal}`);
-//     console.log(`Outer function reporting public: ${this.publicVal}`);
-//   }
-// }
-
-// const outer = new TestOuter("foo", "bar");
-// outer.report();
-// // outer.privateReport();
+coffeeMachine.setWaterAmount(100);
+coffeeMachine.disable();
+console.log(`Включена: ${coffeeMachine.isEnabled()}`);
