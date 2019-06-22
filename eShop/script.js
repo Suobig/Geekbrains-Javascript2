@@ -70,5 +70,3 @@ async(5).then( (b) => {
 }).catch( (err) => {
   console.error(err);
 });
-
-
