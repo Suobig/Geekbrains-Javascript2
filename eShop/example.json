@@ -1,0 +1,8 @@
+{
+  "string": "foo",
+  "int": 12,
+  "arr": [1, 2, "test"],
+  "obj": {
+            "foo": "bar"
+          }
+}
