@@ -52,18 +52,18 @@ class GoodsList {
 class CartItem {
     /**
      * @param  {GoodItem} item покупаемый товар
-     * @param  {} qty=1 количество единиц товара (по умолчанию - 1)
+     * @param  {} quantity=1 количество единиц товара (по умолчанию - 1)
      */
-    constructor(item, qty=1) {
+    constructor(item, quantity=1) {
 
     }
     
     /**
      * Увеличивает количество товара на указанное число штук
-     * @param {Integer} qty добавляемое количество товара
+     * @param {Integer} quantity добавляемое количество товара
      * @returns {Boolean} true - если успешно добавлено, иначе false
      */
-    add(qty=1) {
+    add(quantity=1) {
         
     }
 
