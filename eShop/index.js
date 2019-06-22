@@ -1,4 +1,26 @@
 const placeHolderImage = "img/placeholder.png";
+const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+
+
+function makeGETRequest(url, callback) {
+    var xhr;
+  
+    if (window.XMLHttpRequest) {
+      xhr = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+      xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        callback(xhr.responseText);
+      }
+    }
+
+    xhr.open('GET', url);
+    xhr.send();
+  }
+  
 
 class GoodsItem {
     constructor(title = None, price, image = placeHolderImage) {
@@ -23,16 +45,15 @@ class GoodsList {
         this.goods = [];
     }
 
-    fetchGoods() {
-        //В последующем - асинхронный запрос на удаленный сервер
-        const rawGoods = [
-            { title: "Shirt", price: 150 },
-            { title: "Socks", price: 50 },
-            { title: "Jacket", price: 350 },
-            { title: "Shoes", price: 250 },
-        ]
-        this.goods = rawGoods.map(item => 
-                new GoodsItem(item.title, item.price, item.image));
+    //В последующем - асинхронный запрос на удаленный сервер
+    fetchGoods(callback) {
+        makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
+            const lst = JSON.parse(goods)
+            this.goods = lst.map(good => {
+                return new GoodsItem(good.product_name, good.price);
+            })
+            callback();
+        })
     }
 
     render() {
@@ -123,5 +144,6 @@ class Cart {
 }
 
 const list = new GoodsList();
-list.fetchGoods();
-list.render();
+list.fetchGoods(() => {
+    list.render();
+});
