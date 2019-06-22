@@ -2,7 +2,7 @@ const placeHolderImage = "img/placeholder.png";
 const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
 
-function makeGETRequest(url, callback) {
+function makeGETRequest(url) {
     var xhr;
   
     if (window.XMLHttpRequest) {
@@ -11,14 +11,26 @@ function makeGETRequest(url, callback) {
       xhr = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        callback(xhr.responseText);
-      }
-    }
+    return new Promise((resolve, reject) => {
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    resolve(xhr.responseText);
+                } else {
+                    reject(xhr.statusText);
+                }
+            }
+          }
 
-    xhr.open('GET', url);
-    xhr.send();
+          xhr.ontimeout =function() {
+              reject("Request timeout");
+          }
+      
+          xhr.open('GET', url);
+          xhr.send();
+    })
+
+
   }
   
 
@@ -45,14 +57,15 @@ class GoodsList {
         this.goods = [];
     }
 
-    //В последующем - асинхронный запрос на удаленный сервер
-    fetchGoods(callback) {
-        makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
-            const lst = JSON.parse(goods)
-            this.goods = lst.map(good => {
-                return new GoodsItem(good.product_name, good.price);
-            })
-            callback();
+    //Асинхронный запрос на удаленный сервер
+    fetchGoods() {
+        return makeGETRequest(`${API_URL}/catalogData.json`);
+    }
+
+    parseGoods(goods) {
+        const lst = JSON.parse(goods)
+        this.goods = lst.map(good => {
+            return new GoodsItem(good.product_name, good.price);
         })
     }
 
@@ -144,6 +157,7 @@ class Cart {
 }
 
 const list = new GoodsList();
-list.fetchGoods(() => {
-    list.render();
-});
+list.fetchGoods()
+        .then( goods => list.parseGoods(goods) )
+        .then( () => list.render() )
+        .catch( error => window.alert(error) );
