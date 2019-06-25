@@ -4,35 +4,33 @@ const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-sto
 
 function makeGETRequest(url) {
     var xhr;
-  
+
     if (window.XMLHttpRequest) {
-      xhr = new XMLHttpRequest();
+        xhr = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
-      xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    }
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    };
 
     return new Promise((resolve, reject) => {
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    resolve(xhr.responseText);
-                } else {
-                    reject(xhr.statusText);
-                }
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState !== 4) return;
+
+            if (xhr.status >= 200 && xhr.status < 300) {
+                resolve(xhr.responseText);
+            } else {
+                reject(xhr.statusText);
             }
-          }
+        };
 
-          xhr.ontimeout =function() {
-              reject("Request timeout");
-          }
-      
-          xhr.open('GET', url);
-          xhr.send();
-    })
+        xhr.ontimeout = function () {
+            reject("Request timeout");
+        };
 
+        xhr.open('GET', url);
+        xhr.send();
+    });
+}
 
-  }
-  
 
 class GoodsItem {
     constructor(title = None, price, image = placeHolderImage) {
@@ -53,7 +51,7 @@ class GoodsItem {
 }
 
 class GoodsList {
-    constructor () {
+    constructor() {
         this.goods = [];
     }
 
@@ -72,7 +70,7 @@ class GoodsList {
     render() {
         const listHtml = this.goods.reduce((acc, good) => {
             return acc += good.render();
-        }, '')        
+        }, '')
         document.querySelector('.goods-list').innerHTML = listHtml;
     }
 
@@ -88,17 +86,17 @@ class CartItem {
      * @param  {GoodItem} item покупаемый товар
      * @param  {} quantity=1 количество единиц товара (по умолчанию - 1)
      */
-    constructor(item, quantity=1) {
+    constructor(item, quantity = 1) {
         this.item = item;
         this.quantity = quantity;
     }
-    
+
     /**
      * Увеличивает количество товара на указанное число штук
      * @param {Integer} quantity добавляемое количество товара
      * @returns {Boolean} true - если успешно добавлено, иначе false
      */
-    add(quantity=1) {
+    add(quantity = 1) {
         this.quantity += quantity;
     }
 
@@ -119,14 +117,14 @@ class Cart {
         this.cart = new Map();
         this.total = 0;
     }
-    
+
     /**
      * Добавляет товар в корзину. Если товар уже существует - добавляет 
      * соответствующее количество.
      * @param  {GoodsItem} cartItem добавляемый товар
      * @returns {Boolean} true - если успешно добавлено, иначе false
      */
-    add(goodsItem, quantity=1) {
+    add(goodsItem, quantity = 1) {
         let cartItem;
         if (this.cart.has(goodsItem)) {
             cartItem = this.cart.get(goodsItem);
@@ -138,7 +136,7 @@ class Cart {
         this.recalcTotal();
     }
 
-    remove(goodsItem, quantity=1) {
+    remove(goodsItem, quantity = 1) {
         if (this.cart.has(goodsItem)) {
             const cartItem = this.cart.get(goodsItem);
             cartItem.remove(quantity);
@@ -165,7 +163,7 @@ class Cart {
      */
     recalcTotal() {
         const cartItems = this.getItems();
-        this.total = cartItems.reduce( (total, cartItem) => {
+        this.total = cartItems.reduce((total, cartItem) => {
             return total + cartItem.item.price * cartItem.quantity;
         }, 0);
     }
@@ -189,9 +187,10 @@ class Cart {
 
 const list = new GoodsList();
 list.fetchGoods()
-        .then( goods => list.parseGoods(goods) )
-        .then( () => list.render() )
-        .then( () => testCart())
+    .then(goods => list.parseGoods(goods))
+    .then(() => list.render())
+    .then(() => testCart())
+    .catch(error => console.error(error))
 
 function testCart() {
     const item1 = list.goods[0];
@@ -212,5 +211,5 @@ function testCart() {
     cart.remove(item1, 10);
     console.log(`Check remove more: ${cart.total == item2.price * 2}`);
     cart.delete(item2);
-    console.log(`Check delete: ${cart.total == 0}`);
+    console.log(`Check delete: ${cart.total == 0}`);    
 }
