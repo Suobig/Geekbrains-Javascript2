@@ -21,6 +21,15 @@ function makeGETRequest(url, callback) {
     xhr.send();
   }
   
+function addEventHandlers(list) {
+    const goodsSearch = document.querySelector('.goods-search');
+    const searchInput = document.querySelector('.search-input');
+    goodsSearch.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = searchInput.nodeValue;
+        list.filterGoods(value);
+    })
+}
 
 class GoodsItem {
     constructor(title = None, price, image = placeHolderImage) {
@@ -43,6 +52,7 @@ class GoodsItem {
 class GoodsList {
     constructor () {
         this.goods = [];
+        this.filteredGoods = [];
     }
 
     //В последующем - асинхронный запрос на удаленный сервер
@@ -51,7 +61,8 @@ class GoodsList {
             const lst = JSON.parse(goods)
             this.goods = lst.map(good => {
                 return new GoodsItem(good.product_name, good.price);
-            })
+            });
+            this.filteredGoods = [...this.goods];
             callback();
         })
     }
@@ -67,6 +78,15 @@ class GoodsList {
         return this.goods.reduce((total, good) => {
             return total += good.price;
         }, 0);
+    }
+
+    filterGoods(value) {
+        console.log('Filtering ' + value);
+        
+        const regex = new RegExp(value, 'i');
+        this.goods = this.goods.filter(good => 
+            regex.test(good.product_name));
+        this.render();
     }
 }
 
@@ -143,6 +163,7 @@ class Cart {
     }
 }
 
+addEventHandlers();
 const list = new GoodsList();
 list.fetchGoods(() => {
     list.render();
