@@ -26,8 +26,8 @@ function addEventHandlers(list) {
     const searchInput = document.querySelector('.search-input');
     goodsSearch.addEventListener('submit', (e) => {
         e.preventDefault();
-        const val = searchInput.nodeValue;
-        list.filterGoods(value);
+        const val = searchInput.value;
+        list.filterGoods(val);
     })
 }
 
@@ -67,11 +67,12 @@ class GoodsList {
         })
     }
 
-    render() {
-        const listHtml = this.goods.reduce((acc, good) => {
+    render(cb) {
+        const listHtml = this.filteredGoods.reduce((acc, good) => {
             return acc += good.render();
         }, '')        
         document.querySelector('.goods-list').innerHTML = listHtml;
+        cb();
     }
 
     totalCost() {
@@ -80,13 +81,12 @@ class GoodsList {
         }, 0);
     }
 
-    filterGoods(value) {
-        console.log('Filtering ' + value);
-        
-        const regex = new RegExp(value, 'i');
-        this.goods = this.goods.filter(good => 
-            regex.test(good.product_name));
-        this.render();
+    filterGoods(value) {        
+        const regex = new RegExp(value, 'gmi');
+        this.filteredGoods = this.goods.filter(good => {
+            return regex.test(good.title);
+        });
+        this.render(() => {});
     }
 }
 
@@ -163,8 +163,9 @@ class Cart {
     }
 }
 
-addEventHandlers();
 const list = new GoodsList();
 list.fetchGoods(() => {
-    list.render();
+    list.render(() => {
+        addEventHandlers(list);
+    });
 });
