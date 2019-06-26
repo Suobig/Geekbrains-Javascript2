@@ -31,6 +31,15 @@ function makeGETRequest(url) {
     });
 }
 
+function addEventHandlers(list) {
+    const goodsSearch = document.querySelector('.goods-search');
+    const searchInput = document.querySelector('.search-input');
+    goodsSearch.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = searchInput.value;
+        list.filterGoods(val);
+    })
+}
 
 class GoodsItem {
     constructor(title = None, price, image = placeHolderImage) {
@@ -53,6 +62,7 @@ class GoodsItem {
 class GoodsList {
     constructor() {
         this.goods = [];
+        this.filteredGoods = [];
     }
 
     //Асинхронный запрос на удаленный сервер
@@ -64,11 +74,12 @@ class GoodsList {
         const lst = JSON.parse(goods)
         this.goods = lst.map(good => {
             return new GoodsItem(good.product_name, good.price);
-        })
+        });
+        this.filteredGoods = [...this.goods];
     }
 
     render() {
-        const listHtml = this.goods.reduce((acc, good) => {
+        const listHtml = this.filteredGoods.reduce((acc, good) => {
             return acc += good.render();
         }, '')
         document.querySelector('.goods-list').innerHTML = listHtml;
@@ -78,6 +89,14 @@ class GoodsList {
         return this.goods.reduce((total, good) => {
             return total += good.price;
         }, 0);
+    }
+
+    filterGoods(value) {        
+        const regex = new RegExp(value, 'gmi');
+        this.filteredGoods = this.goods.filter(good => {
+            return regex.test(good.title);
+        });
+        this.render();
     }
 }
 
@@ -189,6 +208,7 @@ const list = new GoodsList();
 list.fetchGoods()
     .then(goods => list.parseGoods(goods))
     .then(() => list.render())
+    .then(() => addEventHandlers(list))  
     .then(() => testCart())
     .catch(error => console.error(error))
 

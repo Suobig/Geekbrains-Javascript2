@@ -17,6 +17,16 @@ header {
   background: lightgrey;
   padding: 15px;
 }
+header .goods-search {
+  width: 35%;
+}
+header .search-input {
+  width: calc(30%);
+  margin-right: 20px;
+}
+header .search-button {
+  width: 70px;
+}
 .cart-button {
   margin-left: auto;
   padding: 5px 7px;
