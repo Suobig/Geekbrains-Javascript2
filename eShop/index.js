@@ -2,34 +2,7 @@ const placeHolderImage = "img/placeholder.png";
 const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
 
-function makeGETRequest(url) {
-    var xhr;
 
-    if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-        xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    };
-
-    return new Promise((resolve, reject) => {
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState !== 4) return;
-
-            if (xhr.status >= 200 && xhr.status < 300) {
-                resolve(xhr.responseText);
-            } else {
-                reject(xhr.statusText);
-            }
-        };
-
-        xhr.ontimeout = function () {
-            reject("Request timeout");
-        };
-
-        xhr.open('GET', url);
-        xhr.send();
-    });
-}
 
 function addEventHandlers(list) {
     const goodsSearch = document.querySelector('.goods-search');
@@ -204,32 +177,77 @@ class Cart {
     }
 }
 
-const list = new GoodsList();
-list.fetchGoods()
-    .then(goods => list.parseGoods(goods))
-    .then(() => list.render())
-    .then(() => addEventHandlers(list))  
-    .then(() => testCart())
-    .catch(error => console.error(error))
+// const list = new GoodsList();
+// list.fetchGoods()
+//     .then(goods => list.parseGoods(goods))
+//     .then(() => list.render())
+//     .then(() => addEventHandlers(list))  
+//     .then(() => testCart())
+//     .catch(error => console.error(error))
 
-function testCart() {
-    const item1 = list.goods[0];
-    const item2 = list.goods[1];
+// function testCart() {
+//     const item1 = list.goods[0];
+//     const item2 = list.goods[1];
 
-    const cart = new Cart();
-    cart.add(item1);
-    console.log(`Check add one: ${cart.total == item1.price}`);
-    cart.add(item1, 2);
-    console.log(`Check add two: ${cart.total == item1.price * 3}`);
-    cart.remove(item1);
-    console.log(`Check remove one: ${cart.total == item1.price * 2}`);
-    cart.remove(item1, 2);
-    console.log(`Check remove two: ${cart.total == 0}`);
-    cart.add(item1, 2);
-    cart.add(item2, 2);
-    console.log(`Check add different: ${cart.total == item1.price * 2 + item2.price * 2}`);
-    cart.remove(item1, 10);
-    console.log(`Check remove more: ${cart.total == item2.price * 2}`);
-    cart.delete(item2);
-    console.log(`Check delete: ${cart.total == 0}`);    
-}
+//     const cart = new Cart();
+//     cart.add(item1);
+//     console.log(`Check add one: ${cart.total == item1.price}`);
+//     cart.add(item1, 2);
+//     console.log(`Check add two: ${cart.total == item1.price * 3}`);
+//     cart.remove(item1);
+//     console.log(`Check remove one: ${cart.total == item1.price * 2}`);
+//     cart.remove(item1, 2);
+//     console.log(`Check remove two: ${cart.total == 0}`);
+//     cart.add(item1, 2);
+//     cart.add(item2, 2);
+//     console.log(`Check add different: ${cart.total == item1.price * 2 + item2.price * 2}`);
+//     cart.remove(item1, 10);
+//     console.log(`Check remove more: ${cart.total == item2.price * 2}`);
+//     cart.delete(item2);
+//     console.log(`Check delete: ${cart.total == 0}`);    
+// }
+
+
+const app = new Vue({
+    el: "#app",
+    data: {
+        goods: [],
+        filteredGoods: [],
+        searchLine: ''
+    },
+    methods: {
+        makeGETRequest(url) {
+            var xhr;
+        
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            };
+        
+            return new Promise((resolve, reject) => {
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState !== 4) return;
+        
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        resolve(JSON.parse(xhr.responseText));
+                    } else {
+                        reject(xhr.statusText);
+                    }
+                };
+        
+                xhr.ontimeout = function () {
+                    reject("Request timeout");
+                };
+        
+                xhr.open('GET', url);
+                xhr.send();
+            });
+        }
+    }, 
+    async mounted() {
+        const goods = await this.makeGETRequest(`${API_URL}/catalogData.json`);
+        this.goods = goods;
+        this.filteredGoods = goods;
+    }
+})

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,23 +8,33 @@
     <title>eShop</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<header>
-    <form action="#" class="goods-search">
-        <input class="search-input" type="text">
-        <button class="search-button">Искать</button>
-    </form>
-    <button class="cart-button">
-        Корзина
-    </button>
-</header>
-<main>
-    <div class="goods-list">
-    </div>
-</main>
-<footer>
 
-</footer>
-<script src="index.js"></script>
+<body>
+    <div id="app">
+        <header>
+            <form action="#" class="goods-search">
+                <input class="search-input" type="text">
+                <button class="search-button">Искать</button>
+            </form>
+            <button class="cart-button">
+                Корзина
+            </button>
+        </header>
+        <main>
+            <div class="goods-list">
+                <div class="goods-item" v-for="good in filteredGoods">
+                    <h3>{{ good.product_name }}</h3>
+                    <p>{{ good.price }}</p>
+                </div>
+            </div>
+        </main>
+        <footer>
+
+        </footer>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="index.js"></script>
 </body>
+
 </html>
