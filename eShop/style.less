@@ -75,9 +75,31 @@ header {
 
 footer {
   background: darkgrey;
-  height: 50px;
+  padding-left: 20px;
+  // min-height: 50px;
+
+  h2 {
+    color: #fff;
+  }
+
+  input {
+    padding: 2px;
+    margin-bottom: 5px;
+  }
+
+  .feedback {
+    margin-bottom: 30px;
+  }
+
+  [data-error] {
+    color: rgb(209, 15, 15);
+
+    input {
+      border: 1px solid #f00;
+    }
+  }
+
+  [data-error]:after {
+    content: attr(data-error);
+  }
 }
-
-
-
-

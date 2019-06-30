@@ -23,18 +23,26 @@
 </main>
 <footer>
     <h2>Обратная связь:</h2>
-    <form action="#" class="feedback">
-        <label for="">Имя</label>
-        <input class="feedback-name" type="text">
-        <label for="">Телефон</label>
-        <input class="feedback-phone" type="text">
-        <label for="">Email</label>
-        <input class="feedback-email" type="text">
-        <label for="">Текст</label>
-        <input class="feedback-text" type="text">
+    <form action="" class="feedback">
+        <div class="feedback-input-wrapper">
+            <input class="feedback-name verification verification-required" type="text" 
+                    placeholder="Имя">
+        </div>
+        <div class="feedback-input-wrapper">
+            <input class="feedback-phone verification verification-required verification-phone" 
+                    type="text" placeholder="Телефон">
+        </div>
+        <div class="feedback-input-wrapper">
+            <input class="feedback-email verification verification-required verification-email" 
+                    type="text" placeholder="email">
+        </div>
+        <div class="feedback-input-wrapper">
+            <input class="feedback-text" type="text" placeholder="Текст">
+        </div>
         <button type="submit" class="feedback-send">Отправить</button>
     </form>
 </footer>
 <script src="index.js"></script>
+<script src="verification.js"></script>
 </body>
 </html>
