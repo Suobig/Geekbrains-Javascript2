@@ -13,8 +13,8 @@
     <div id="app">
         <header>
             <form action="#" class="goods-search">
-                <input class="search-input" type="text">
-                <button class="search-button">Искать</button>
+                <input class="search-input" type="text" v-model="searchLine">
+                <button class="search-button" v-on:click="filter()">Искать</button>
             </form>
             <button class="cart-button">
                 Корзина
@@ -24,6 +24,7 @@
             <div class="goods-list">
                 <div class="goods-item" v-for="good in filteredGoods">
                     <h3>{{ good.product_name }}</h3>
+                    <img :src="good.image">
                     <p>{{ good.price }}</p>
                 </div>
             </div>
