@@ -1,27 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>AJAX and COMET</title>
+  <meta charset="utf-8">
 </head>
 
 <body>
-  <header>
-    <h1>AJAX and COMET</h1>
-  </header>
-  <main>
-    <button onclick="loadPhones()" id="button">Загрузить phones.json</button>
-    <div id="result">
 
-    </div>
-    <script src="index.js"></script>
-  </main>
-  <footer>
+  <button onclick="run()">Загрузить digits</button>
 
-  </footer>
+  <ul id="log"></ul>
+
+  <script>
+    function run() {
+
+      var xhr = new XMLHttpRequest();
+      write(xhr.readyState);
+
+      xhr.open('GET', 'digits', true);
+      write(xhr.readyState);
+
+      xhr.onreadystatechange = function() {
+        write(xhr.readyState + " получено символов:" + xhr.responseText.length);
+      };
+
+      xhr.send();
+    }
+
+    function write(text) {
+      var li = log.appendChild(document.createElement('li'));
+      li.innerHTML = text;
+    }
+  </script>
+
 </body>
 
 </html>
