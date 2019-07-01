@@ -54,3 +54,17 @@ class Verification {
 }
 
 new Verification();
+
+function managePhoneInput() {
+  const phoneInputEl = document.querySelector('.verification-phone');
+
+  phoneInputEl.addEventListener('keypress', (e) => {
+    let position = phoneInputEl.selectionStart
+
+    console.log(`Keycode = ${e.keyCode}`);
+    console.log(position);
+    
+  })
+}
+
+// managePhoneInput();
