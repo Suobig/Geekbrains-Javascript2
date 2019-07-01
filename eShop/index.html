@@ -22,16 +22,16 @@
             </button>
         </header>
         <main>
-            <div class="goods-list">
+            <div v-if="filteredGoods.length" class="goods-list">
                 <div class="goods-item" v-for="good in filteredGoods">
                     <h3>{{ good.product_name }}</h3>
                     <img :src="good.image">
                     <p>{{ good.price }}</p>
                 </div>
-                <h1 class="no-data" v-if="!filteredGoods.length">
-                    Нет данных
-                </h1>
             </div>
+            <h1 class="no-data" v-else>
+                Нет данных
+            </h1>
             <div class="cart" v-if="isCartShown">
                 <div class="arrow">
 
