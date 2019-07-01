@@ -14,9 +14,9 @@
         <header>
             <form action="#" class="goods-search">
                 <input class="search-input" type="text" v-model="searchLine">
-                <button class="search-button" v-on:click="filter()">Искать</button>
+                <button class="search-button" @click="filter">Искать</button>
             </form>
-            <button class="cart-button" v-on:click="toggleCart()"
+            <button class="cart-button" @click="toggleCart"
                     v-bind:class="{'cart-button-shown': isCartShown}">
                 Корзина
             </button>
