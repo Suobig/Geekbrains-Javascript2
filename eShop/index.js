@@ -6,7 +6,8 @@ const app = new Vue({
     data: {
         goods: [],
         filteredGoods: [],
-        searchLine: ''
+        searchLine: '',
+        isCartShown: false,
     },
     methods: {
         makeGETRequest(url) {
@@ -49,6 +50,9 @@ const app = new Vue({
                     item.image = placeHolderImage;
                 }
             })
+        },
+        toggleCart() {
+            this.isCartShown = !this.isCartShown;
         }
     }, 
     async mounted() {

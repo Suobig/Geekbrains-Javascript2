@@ -12,6 +12,7 @@ body {
 
 main {
   height: 100%;
+  padding: 0 30px;
 }
 
 header {
@@ -40,16 +41,19 @@ header {
   font-size: 14px;
   background: #fff;
   border: 1px solid #000;
-  border-radius: 6px;
+  border-radius: 10px;
   box-shadow: 0 1px 5px #000;
 
-  &:active {
-    box-shadow: none;
+  &:focus {
+    outline: 0;
   }
 }
 
+.cart-button-shown {
+  box-shadow: none;
+}
+
 .goods-list {
-  margin: 0 20px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -70,6 +74,30 @@ header {
 
   .button-item-add {
     margin-left: auto;
+  }
+}
+
+.cart {
+  position: absolute;
+  width: 400px;
+  height: 200px;
+  background: #fff;
+  border: 1px solid #000;
+  top: 60px;
+  right: 0;
+  border-radius: 5px;
+
+  .arrow {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 35px;
+    top: -11px;
+    transform: rotate(45deg);
+    background: #fff;
+    border: 1px solid #000;
+    border-bottom-width: 0;
+    border-right-width: 0;
   }
 }
 

@@ -16,7 +16,8 @@
                 <input class="search-input" type="text" v-model="searchLine">
                 <button class="search-button" v-on:click="filter()">Искать</button>
             </form>
-            <button class="cart-button">
+            <button class="cart-button" v-on:click="toggleCart()"
+                    v-bind:class="{'cart-button-shown': isCartShown}">
                 Корзина
             </button>
         </header>
@@ -26,6 +27,14 @@
                     <h3>{{ good.product_name }}</h3>
                     <img :src="good.image">
                     <p>{{ good.price }}</p>
+                </div>
+                <h1 class="no-data" v-if="!filteredGoods.length">
+                    Нет данных
+                </h1>
+            </div>
+            <div class="cart" v-if="isCartShown">
+                <div class="arrow">
+
                 </div>
             </div>
         </main>
