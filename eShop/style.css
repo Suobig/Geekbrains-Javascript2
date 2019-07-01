@@ -62,5 +62,24 @@ header .search-button {
 }
 footer {
   background: darkgrey;
-  height: 50px;
+  padding-left: 20px;
+}
+footer h2 {
+  color: #fff;
+}
+footer input {
+  padding: 2px;
+  margin-bottom: 5px;
+}
+footer .feedback {
+  margin-bottom: 30px;
+}
+footer [data-error] {
+  color: #d10f0f;
+}
+footer [data-error] input {
+  border: 1px solid #f00;
+}
+footer [data-error]:after {
+  content: attr(data-error);
 }

@@ -29,12 +29,32 @@
             </div>
         </main>
         <footer>
-
+            <h2>Обратная связь:</h2>
+            <form action="" class="feedback">
+                <div class="feedback-input-wrapper">
+                    <input class="feedback-name verification verification-required" type="text" 
+                            placeholder="Имя">
+                </div>
+                <div class="feedback-input-wrapper">
+                    <input class="feedback-phone verification verification-required verification-phone" 
+                            type="text" placeholder="Телефон">
+                </div>
+                <div class="feedback-input-wrapper">
+                    <input class="feedback-email verification verification-required verification-email" 
+                            type="text" placeholder="email">
+                </div>
+                <div class="feedback-input-wrapper">
+                    <input class="feedback-text" type="text" placeholder="Текст">
+                </div>
+                <button type="submit" class="feedback-send">Отправить</button>
+            </form>
         </footer>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="index.js"></script>
+<script src="index.js"></script>
+<script src="verification.js"></script>
 </body>
 
 </html>
