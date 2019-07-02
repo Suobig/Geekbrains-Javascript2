@@ -7,32 +7,11 @@
 
 <body>
 
-  <button onclick="run()">Загрузить digits</button>
-
-  <ul id="log"></ul>
-
-  <script>
-    function run() {
-
-      var xhr = new XMLHttpRequest();
-      write(xhr.readyState);
-
-      xhr.open('GET', 'digits', true);
-      write(xhr.readyState);
-
-      xhr.onreadystatechange = function() {
-        write(xhr.readyState + " получено символов:" + xhr.responseText.length);
-      };
-
-      xhr.send();
-    }
-
-    function write(text) {
-      var li = log.appendChild(document.createElement('li'));
-      li.innerHTML = text;
-    }
-  </script>
-
+  <button onclick="loadPhones()" id="button">Загрузить phones.json!</button>
+  <ul id="phoneList">
+    
+  </ul>
+  <script src="index.js"></script>
 </body>
 
 </html>
