@@ -24,14 +24,6 @@ Vue.component('goods-list', {
     `
 })
 
-str = `
-<!--<div v-if="has-data" class="goods-list">
-</div>
-<h2 class="no-data" v-else>
-    Нет данных
-</h2>-->
-`
-
 const app = new Vue({
     el: "#app",
     data: {
