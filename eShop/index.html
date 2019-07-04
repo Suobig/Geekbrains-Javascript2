@@ -29,7 +29,6 @@
                 </div>
             </div>
         </div>
-
         <header>
             <form action="#" class="goods-search">
                 <input class="search-input" type="text" v-model="searchLine" @input="throttleFilter">
@@ -39,16 +38,7 @@
             </button>
         </header>
         <main>
-            <div v-if="hasFilteredGoods" class="goods-list">
-                <div class="goods-item" v-for="good in filteredGoods" :key="good.id_product">
-                    <h3>{{ good.product_name }}</h3>
-                    <img :src="good.image">
-                    <p>{{ good.price }}</p>
-                </div>
-            </div>
-            <h2 class="no-data" v-else>
-                Нет данных
-            </h2>
+            <goods-list :goods="filteredGoods" :has_data="hasFilteredGoods"></goods-list>
             <div class="cart" v-if="isCartShown">
                 <div class="arrow">
 

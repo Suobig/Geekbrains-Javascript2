@@ -1,6 +1,37 @@
 const placeHolderImage = "img/placeholder.png";
 const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
+Vue.component('goods-item', {
+    props: ['good'],
+    template: `
+        <div class="goods-item">
+            <h3>{{ good.product_name }}</h3>
+            <img :src="good.image">
+            <p>{{ good.price }}</p>
+        </div>
+    `
+})
+
+Vue.component('goods-list', {
+    props: ['goods', 'has_data'],
+    template: `
+    <div v-if="has_data" class="goods-list">
+        <goods-item v-for="good in goods" :good="good" :key="good.id_product"></goods-item>
+    </div>
+    <h2 class="no-data" v-else>
+        Нет данных
+    </h2>
+    `
+})
+
+str = `
+<!--<div v-if="has-data" class="goods-list">
+</div>
+<h2 class="no-data" v-else>
+    Нет данных
+</h2>-->
+`
+
 const app = new Vue({
     el: "#app",
     data: {
