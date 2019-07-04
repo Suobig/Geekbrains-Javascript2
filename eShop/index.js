@@ -62,6 +62,35 @@ const app = new Vue({
                 xhr.send();
             });
         },
+        makePOSTRequest(url, data) {
+            var xhr;
+        
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            };
+        
+            return new Promise((resolve, reject) => {
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState !== 4) return;
+        
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        resolve(JSON.parse(xhr.responseText));
+                    } else {
+                        reject(xhr.statusText);
+                    }
+                };
+        
+                xhr.ontimeout = function () {
+                    reject("Request timeout");
+                };
+        
+                xhr.open('POST', url);
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8')
+                xhr.send(data);
+            });
+        },
         prepareGoods() {
             this.goods.forEach(item => {
                 if (!item.image) {
@@ -93,7 +122,7 @@ const app = new Vue({
     async mounted() {
         const timeStart = Date.now();
 
-        const goods = await this.makeGETRequest(`${API_URL}/catalogData.json`);
+        const goods = await this.makeGETRequest(`/catalogData`);
         this.goods = goods;
         this.prepareGoods();        
         this.finishLoading(timeStart);

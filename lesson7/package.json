@@ -1,0 +1,29 @@
+{
+  "name": "lesson7",
+  "version": "1.0.0",
+  "description": "Geekbrains Javascript2 lesson7",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Suobig/Geekbrains-javascript2.git"
+  },
+  "keywords": [
+    "geekbraing",
+    "learning",
+    "javascript",
+    "node.js"
+  ],
+  "author": "Suobig",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Suobig/Geekbrains-javascript2/issues"
+  },
+  "homepage": "https://github.com/Suobig/Geekbrains-javascript2#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "static-server": "^2.2.1"
+  }
+}
