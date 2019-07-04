@@ -26,3 +26,58 @@
 * Оба используют Virtual DOM - виртуальная модель объектов.
 * Представляют реактивность и компонентрую структуру
 * фокусируются на коневой библиотеке, вынося прочие вопросы, такие как роутинг или управление глобальным состоянием проиложения, в дополнительные библиотеки.
+
+## Сокращения
+
+Vue.js использует сокращения для двух популярных команд:
+
+* `v-bind:data` <-> `:data`
+* `v-on:action` <-> `@action`
+
+## Event Listeners через Vue.js
+
+Чтобы "повесить" eventListener на элемент html, используется синтаксис `v-bind:action="callback"` или его сокращенная версия `@action="callback"`
+
+При этом вместе с eventListener можно добавить модификатор.
+
+Примеры:
+
+```html
+<!-- the click event's propagation will be stopped -->
+<a v-on:click.stop="doThis"></a>
+<!-- the submit event will no longer reload the page -->
+<form v-on:submit.prevent="onSubmit"></form>
+<!-- modifiers can be chained -->
+<a v-on:click.stop.prevent="doThat">
+<!-- just the modifier -->
+<form v-on:submit.prevent></form>
+<!-- use capture mode when adding the event listener -->
+<div v-on:click.capture="doThis">...</div>
+<!-- only trigger handler if event.target is the element itself -->
+<!-- i.e. not from a child element -->
+<div v-on:click.self="doThat">...</div>
+<!-- model has it's own modifiers. For example to trim a string -->
+<input v-model.trim="someString" type="text">
+```
+
+## Библиотека Lodash
+
+Библиотека скачивается с [сайта Lodash.com](https://lodash.com) и используется для решения ряда типовых задач. В нашем случае мы можем использовать ее для автоматического поиска по окончанию ввода пользователем текста в строку поиска.
+
+### Функция throttle
+
+Функция используется для обратного вызова другой функции через определенный промежуток времени. При этом при повторном вызове throttle до истечения этого времени, отчет начинается заново, без второго вызова функции-callback'а.
+
+Синтаксис:
+
+```javascript
+options = {
+    "leading": true, // вызов коллбека в начале таймера
+    "trailing": true // вызов коллбека в конце таймера
+}
+_.throttle(callback, timeout, options);
+```
+
+## Ключи для v-for
+
+При использовании функции v-for крайне желательно задавать ключи для кажого элемента, чтобы при обновлении этого элемента Vue пересчитывал только его, а не все дерево. Это можно сделать с помощью `:key`. Желательно использовать в качестве ключа не индекс элемента в массиве (т.к. при вставке элемента в начало обновятся все индексы), а некий внутренний уникальный идентификатор элемента.

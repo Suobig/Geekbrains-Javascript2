@@ -11,47 +11,64 @@
 
 <body>
     <div id="app">
+        <div id="preloader" v-if="isLoading">
+            <div class="lds-css ng-scope">
+                <div class="lds-spinner">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+
         <header>
             <form action="#" class="goods-search">
-                <input class="search-input" type="text" v-model="searchLine">
-                <button class="search-button" @click="filter">Искать</button>
+                <input class="search-input" type="text" v-model="searchLine" @input="throttleFilter">
             </form>
-            <button class="cart-button" @click="toggleCart"
-                    v-bind:class="{'cart-button-shown': isCartShown}">
+            <button class="cart-button" @click="toggleCart" :class="{'cart-button-shown': isCartShown}">
                 Корзина
             </button>
         </header>
         <main>
-            <div v-if="filteredGoods.length" class="goods-list">
-                <div class="goods-item" v-for="good in filteredGoods">
+            <div v-if="hasFilteredGoods" class="goods-list">
+                <div class="goods-item" v-for="good in filteredGoods" :key="good.id_product">
                     <h3>{{ good.product_name }}</h3>
                     <img :src="good.image">
                     <p>{{ good.price }}</p>
                 </div>
             </div>
-            <h1 class="no-data" v-else>
+            <h2 class="no-data" v-else>
                 Нет данных
-            </h1>
+            </h2>
             <div class="cart" v-if="isCartShown">
                 <div class="arrow">
 
                 </div>
+                <button class="close-cart" @click="toggleCart">❌</button>
             </div>
         </main>
         <footer>
             <h2>Обратная связь:</h2>
             <form action="" class="feedback">
                 <div class="feedback-input-wrapper">
-                    <input class="feedback-name verification verification-required" type="text" 
-                            placeholder="Имя">
+                    <input class="feedback-name verification verification-required" type="text" placeholder="Имя">
                 </div>
                 <div class="feedback-input-wrapper">
-                    <input class="feedback-phone verification verification-required verification-phone" 
-                            type="text" placeholder="Телефон">
+                    <input class="feedback-phone verification verification-required verification-phone" type="text"
+                        placeholder="Телефон">
                 </div>
                 <div class="feedback-input-wrapper">
-                    <input class="feedback-email verification verification-required verification-email" 
-                            type="text" placeholder="email">
+                    <input class="feedback-email verification verification-required verification-email" type="text"
+                        placeholder="email">
                 </div>
                 <div class="feedback-input-wrapper">
                     <input class="feedback-text" type="text" placeholder="Текст">
@@ -60,11 +77,13 @@
             </form>
         </footer>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"
+        integrity="sha256-7/yoZS3548fXSRXqc/xYzjsmuW3sFKzuvOCHd06Pmps=" crossorigin="anonymous"></script>
     <script src="index.js"></script>
-<script src="index.js"></script>
-<script src="verification.js"></script>
+    <script src="index.js"></script>
+    <script src="verification.js"></script>
 </body>
 
 </html>

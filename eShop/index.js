@@ -5,9 +5,10 @@ const app = new Vue({
     el: "#app",
     data: {
         goods: [],
-        filteredGoods: [],
         searchLine: '',
+        currentSearch: new RegExp('', 'i'),
         isCartShown: false,
+        isLoading: true, 
     },
     methods: {
         makeGETRequest(url) {
@@ -38,12 +39,6 @@ const app = new Vue({
                 xhr.send();
             });
         },
-        filter() {        
-            const regex = new RegExp(this.searchLine, 'gmi');            
-            this.filteredGoods = this.goods.filter(good => {
-                return regex.test(good.product_name);
-            });
-        },
         prepareGoods() {
             this.goods.forEach(item => {
                 if (!item.image) {
@@ -51,14 +46,47 @@ const app = new Vue({
                 }
             })
         },
+        filterGoods() {
+            this.currentSearch = new RegExp(this.searchLine, 'i');
+
+        },
         toggleCart() {
             this.isCartShown = !this.isCartShown;
+        },
+
+        finishLoading(timeStart) {
+            const minTime = 500;
+            const timeLeft = minTime - Date.now() + timeStart;
+            
+            if (timeLeft > 0) {
+                setTimeout(() => {
+                    this.isLoading = false;
+                }, timeLeft); 
+            } else {
+                this.isLoading = false;
+            }
         }
     }, 
     async mounted() {
+        const timeStart = Date.now();
+
         const goods = await this.makeGETRequest(`${API_URL}/catalogData.json`);
         this.goods = goods;
-        this.prepareGoods();
-        this.filteredGoods = goods;
+        this.prepareGoods();        
+        this.finishLoading(timeStart);
+    }, 
+    computed: {
+        throttleFilter() {
+            return _.throttle(this.filterGoods, 300, { 'leading': false });
+        },
+        filteredGoods() {
+            if (!this.goods || !Array.isArray(this.goods)) return [];
+            return this.goods.filter(good => {                
+                return this.currentSearch.test(good.product_name);
+            });
+        },
+        hasFilteredGoods() {
+            return this.filteredGoods.length !== 0;
+        }
     }
 })
