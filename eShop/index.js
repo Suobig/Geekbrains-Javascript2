@@ -24,11 +24,23 @@ Vue.component('goods-list', {
     `
 })
 
+Vue.component('search-field', {
+    data: function() {
+        return {
+            searchLine: ''
+        }
+    },
+    template: `
+        <form action="#" class="goods-search">
+            <input class="search-input" type="text" placeholder="Поиск" v-model="searchLine" @input="$emit('newsearch', searchLine)">
+        </form>
+    `
+})
+
 const app = new Vue({
     el: "#app",
     data: {
         goods: [],
-        searchLine: '',
         currentSearch: new RegExp('', 'i'),
         isCartShown: false,
         isLoading: true, 
@@ -69,8 +81,8 @@ const app = new Vue({
                 }
             })
         },
-        filterGoods() {
-            this.currentSearch = new RegExp(this.searchLine, 'i');
+        filterGoods(search) {
+            this.currentSearch = new RegExp(search, 'i');
 
         },
         toggleCart() {
@@ -99,8 +111,8 @@ const app = new Vue({
         this.finishLoading(timeStart);
     }, 
     computed: {
-        throttleFilter() {
-            return _.throttle(this.filterGoods, 300, { 'leading': false });
+        throttleFilter(search) {
+            return _.throttle(this.filterGoods(search), 300, { 'leading': false });
         },
         filteredGoods() {
             if (!this.goods || !Array.isArray(this.goods)) return [];

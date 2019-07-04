@@ -30,9 +30,7 @@
             </div>
         </div>
         <header>
-            <form action="#" class="goods-search">
-                <input class="search-input" type="text" v-model="searchLine" @input="throttleFilter">
-            </form>
+            <search-field @newsearch="throttleFilter"></search-field>
             <button class="cart-button" @click="toggleCart" :class="{'cart-button-shown': isCartShown}">
                 Корзина
             </button>
