@@ -37,6 +37,18 @@ Vue.component('search-field', {
     `
 })
 
+Vue.component('cart', {
+    props: ["visible"],
+    template: `
+        <div class="cart" v-if="visible">
+            <div class="arrow">
+
+            </div>
+            <button class="close-cart" @click="$emit('hidecart')">❌</button>
+        </div>
+    `
+})
+
 const app = new Vue({
     el: "#app",
     data: {
@@ -86,6 +98,8 @@ const app = new Vue({
 
         },
         toggleCart() {
+            console.log(`Cart Toggled`);
+            
             this.isCartShown = !this.isCartShown;
         },
 

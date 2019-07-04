@@ -37,12 +37,7 @@
         </header>
         <main>
             <goods-list :goods="filteredGoods" :has_data="hasFilteredGoods"></goods-list>
-            <div class="cart" v-if="isCartShown">
-                <div class="arrow">
-
-                </div>
-                <button class="close-cart" @click="toggleCart">❌</button>
-            </div>
+            <cart :visible="isCartShown" @hidecart="toggleCart"></cart>
         </main>
         <footer>
             <h2>Обратная связь:</h2>
