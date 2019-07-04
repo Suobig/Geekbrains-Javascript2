@@ -111,9 +111,6 @@ const app = new Vue({
         this.finishLoading(timeStart);
     }, 
     computed: {
-        throttleFilter(search) {
-            return _.throttle(this.filterGoods(search), 300, { 'leading': false });
-        },
         filteredGoods() {
             if (!this.goods || !Array.isArray(this.goods)) return [];
             return this.goods.filter(good => {                
@@ -122,6 +119,9 @@ const app = new Vue({
         },
         hasFilteredGoods() {
             return this.filteredGoods.length !== 0;
+        },
+        throttleFilter() {
+            return _.throttle(this.filterGoods, 300, { 'leading': false });
         }
     }
 })
