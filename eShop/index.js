@@ -24,11 +24,35 @@ Vue.component('goods-list', {
     `
 })
 
+Vue.component('search-field', {
+    data: function() {
+        return {
+            searchLine: ''
+        }
+    },
+    template: `
+        <form action="#" class="goods-search">
+            <input class="search-input" type="text" placeholder="Поиск" v-model="searchLine" @input="$emit('newsearch', searchLine)">
+        </form>
+    `
+})
+
+Vue.component('cart', {
+    props: ["visible"],
+    template: `
+        <div class="cart" v-if="visible">
+            <div class="arrow">
+
+            </div>
+            <button class="close-cart" @click="$emit('hidecart')">❌</button>
+        </div>
+    `
+})
+
 const app = new Vue({
     el: "#app",
     data: {
         goods: [],
-        searchLine: '',
         currentSearch: new RegExp('', 'i'),
         isCartShown: false,
         isLoading: true, 
@@ -69,11 +93,13 @@ const app = new Vue({
                 }
             })
         },
-        filterGoods() {
-            this.currentSearch = new RegExp(this.searchLine, 'i');
+        filterGoods(search) {
+            this.currentSearch = new RegExp(search, 'i');
 
         },
         toggleCart() {
+            console.log(`Cart Toggled`);
+            
             this.isCartShown = !this.isCartShown;
         },
 
@@ -99,9 +125,6 @@ const app = new Vue({
         this.finishLoading(timeStart);
     }, 
     computed: {
-        throttleFilter() {
-            return _.throttle(this.filterGoods, 300, { 'leading': false });
-        },
         filteredGoods() {
             if (!this.goods || !Array.isArray(this.goods)) return [];
             return this.goods.filter(good => {                
@@ -110,6 +133,9 @@ const app = new Vue({
         },
         hasFilteredGoods() {
             return this.filteredGoods.length !== 0;
+        },
+        throttleFilter() {
+            return _.throttle(this.filterGoods, 300, { 'leading': false });
         }
     }
 })

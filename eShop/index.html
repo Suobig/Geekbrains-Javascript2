@@ -30,21 +30,14 @@
             </div>
         </div>
         <header>
-            <form action="#" class="goods-search">
-                <input class="search-input" type="text" v-model="searchLine" @input="throttleFilter">
-            </form>
+            <search-field @newsearch="throttleFilter"></search-field>
             <button class="cart-button" @click="toggleCart" :class="{'cart-button-shown': isCartShown}">
                 Корзина
             </button>
         </header>
         <main>
             <goods-list :goods="filteredGoods" :has_data="hasFilteredGoods"></goods-list>
-            <div class="cart" v-if="isCartShown">
-                <div class="arrow">
-
-                </div>
-                <button class="close-cart" @click="toggleCart">❌</button>
-            </div>
+            <cart :visible="isCartShown" @hidecart="toggleCart"></cart>
         </main>
         <footer>
             <h2>Обратная связь:</h2>
@@ -71,7 +64,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"
         integrity="sha256-7/yoZS3548fXSRXqc/xYzjsmuW3sFKzuvOCHd06Pmps=" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
     <script src="index.js"></script>
     <script src="verification.js"></script>
 </body>
